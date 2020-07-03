@@ -1,0 +1,35 @@
+
+  h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 3em;
+    letter-spacing: 0.1em;
+    
+    animation: rotate 2s ease-in-out alternate infinite;
+  }
+  h1:hover{
+      transition: 3s;
+      animation-play-state: paused;
+      transform: rotateY(0deg);
+    }
+  @keyframes rotate {
+    from {
+      transform: rotateY(-20deg);
+      text-shadow:  1px -1px #CCC,
+                    2px -1px #BBB,
+                    3px -2px #AAA,
+                    4px -2px #999,
+                    5px -3px #888,
+                    6px -3px #777;
+    }
+    to {
+      transform: rotateY(20deg);
+      text-shadow:  -1px -1px #CCC,
+                    -2px -1px #BBB,
+                    -3px -2px #AAA,
+                    -4px -2px #999,
+                    -5px -3px #888,
+                    -6px -3px #777;
+    }
+  }
+

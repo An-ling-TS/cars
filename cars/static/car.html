@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../static/js/jquery-min.js"></script>
+    <link rel="stylesheet" href="../static/css/shadow.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/zzsc.css"/>
+    <title>二手车预测</title>
+    <style>
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-image: url("../static/pic/car_bg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        #cars {
+            position: absolute;
+            top: 5%;
+            left: 30%;
+            color: black;
+            width: 50%;
+            height: 80%;
+        }
+
+        td {
+            font-size: 1.5vw;
+            width: 20%;
+            height: 5vh;
+        }
+
+        input {
+            height: 100%;
+            width: 100%;
+            font-size: 1.5vw;
+            font-weight: 800;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: black;
+            border: 0;
+        }
+
+        select {
+            border: 0;
+            height: 100%;
+            width: 60%;
+            font-weight: 800;
+            font-size: 1vw;
+        }
+
+        .radio {
+            width: 12%;
+            font-weight: 800;
+            font-size: 1vw;
+            height: 40%;
+        }
+
+        tr > :first-child {
+            text-align: center;
+        }
+
+        #button {
+            margin-left: -10%;
+            font-weight: 800;
+            height: 100%;
+            width: 25%;
+            font-size: 2vw;
+            color: black;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        #button:hover {
+            background: rgba(124, 99, 99, 0.8);
+            height: 6%;
+            width: 27%;
+            transition: 3s;
+            color: white;
+        }
+
+        select {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: black;
+            border-left: 1px solid #000;
+        }
+
+        option {
+            background-color: rgba(255, 255, 255, 0.5);
+            font-weight: 800;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 85%;
+            top: 3%;
+            left: 25%;
+            filter: blur(10px) contrast(.9);
+            z-index: -1;
+        }
+
+        .wrap-box, .login-box::before {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        #wheel {
+            position: absolute;
+            width: 3vw;
+            height: 3vw;
+            animation: wheel_move 10s infinite;
+            animation-timing-function: linear;
+            animation-direction: alternate;
+        }
+
+        #wheel img {
+            width: 100%;
+            height: auto;
+        }
+
+        .error {
+            color: red
+        }
+    </style>
+</head>
+<body>
+<!--<script src='../static/js/shine.min.js'></script>-->
+<script src="../static/js/shadow.js"></script>
+
+<div class="wrap-box"><!--最外层包裹框，背景图片很鲜艳亮眼position:fixed-->
+    <div class='login-box'><!--登录表单框部分position:fixed-->
+        <form id="cars" method='POST' action="/price" name="car_form">
+            <center>
+                <table>
+                    <tr>
+                        <td><h1 class="headline">汽车注册日期</h1></td>
+                        <td colspan="2"><input id="regdate" type="date" value="2020-06-01" name="regdate"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">品牌</h1></td>
+                        <td colspan="2">
+                            <select name="brand" id="brand" onchange="brand_model_change()">
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">车型编码</h1></td>
+                        <td colspan="2">
+                            <select name="model" id="model">
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">车身类型</h1></td>
+                        <td colspan="2">
+                            <select name="bodytype">
+                                <option value="0">豪华轿车</option>
+                                <option value="1">微型车</option>
+                                <option value="2">厢型车</option>
+                                <option value="3">大巴车</option>
+                                <option value="4">敞篷车</option>
+                                <option value="5">双门汽车</option>
+                                <option value="6">商务车</option>
+                                <option value="7">搅拌车</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">燃油</h1></td>
+                        <td colspan="2">
+                            <select name="fueltype">
+                                <option value="0">汽油</option>
+                                <option value="1">柴油</option>
+                                <option value="2">液化石油气</option>
+                                <option value="3">天然气</option>
+                                <option value="4">混合动力</option>
+                                <option value="5">其它</option>
+                                <option value="6">电动</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">变速箱</h1></td>
+                        <td><input class="radio" type="radio" name="gearbox" value="0" checked>手动</td>
+                        <td><input class="radio" type="radio" name="gearbox" value="1">电动</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">发动机功率</h1></td>
+                        <td colspan="2"><input type="text" id="power" name="power" value="0" required pattern="[0-9]+"
+                                               title="功率"></td>
+                        <td>KW</td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">已行驶里程</h1></td>
+                        <td colspan="2"><input type="text" id="kilometer" name="kilometer" value="0" required
+                                               pattern="[0-9]+.[0-9]+" title="已行驶里程"></td>
+                        <td>万KM</td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">是否有尚未修复的损坏</h1></td>
+                        <td><input class="radio" type="radio" name="notrepaireddamage" value="1" checked>是</td>
+                        <td><input class="radio" type="radio" name="notrepaireddamage" value="0">否</td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">销售方</h1></td>
+                        <td><input class="radio" type="radio" name="seller" value="0" checked>个体</td>
+                        <td><input class="radio" type="radio" name="seller" value="1">非个体</td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">区域码</h1></td>
+                        <td colspan="2"><input id="regioncode" type="text" value="0000" name="regioncode"
+                                               pattern="[0-9]{4}" title="四个数字的区域代码"/></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">报价类型</h1></td>
+                        <td><input class="radio" type="radio" name="offertype" value="0" checked>提供</td>
+                        <td><input class="radio" type="radio" name="offertype" value="1">请求</td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="headline">开始售卖时间</h1></td>
+                        <td colspan="2"><input id="creatdate" type="date" value="2020-06-01" name="creatdate"></td>
+                    </tr>
+                </table>
+                <input id="button" type="button" value="预测价格">
+                <div id="wheel"><img src="../static/pic/wheel.png"></div>
+            </center>
+        </form>
+    </div>
+</div>
+<div class="out">
+    <div class="fade-in">
+        <div class="container">
+            <div class="one common"></div>
+            <div class="two common"></div>
+            <div class="three common"></div>
+            <div class="four common"></div>
+            <div class="five common"></div>
+            <div class="six common"></div>
+            <div class="seven common"></div>
+            <div class="eight common"></div>
+        </div>
+    </div>
+</div>
+<h1 id="bm" style="display: none;">{{brand_model}}</h1>
+</body>
+<script>
+    /*******页面加载*******/
+    onload = function () {
+        
+        $(".out").hide()
+        //alert()
+        for (var i = 0; i <= 39; i++)
+            $("#brand").append("<option value=" + i.toString() + ">" + i.toString() + "</option>")
+        brand_model_change()
+        /*
+        for(var i=0;i<doms.length;i++){
+            var shine = new Shine(doms[i]);
+            shines.push(shine)
+        }*/
+        //更新日期
+        var now = new Date();
+        //格式化日，如果小于9，前面补0
+        var day = ("0" + now.getDate()).slice(-2);
+        //格式化月，如果小于9，前面补0
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        //拼装完整日期格式
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+        $("#regdate").val(today);
+        $("#creatdate").val(today)
+    }
+    /*********字体阴影************/
+    var doms = $("[class=headline]")
+    var shines = []
+    window.addEventListener('mousemove', handleMouseMove, false);
+
+    function handleMouseMove(event) {
+        for (var i = 0; i < shines.length; i++) {
+            shines[i].light.position.x = event.clientX;
+            shines[i].light.position.y = event.clientY;
+            shines[i].draw();
+        }
+    }
+
+    /************动态下拉框****************/
+    var xmlhttp;
+
+    function loadXMLDoc(brand_val, cfunc) {
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = cfunc;
+        //brand_model/num
+        xmlhttp.open("GET", "/brand_model/" + brand_val.toString(), true);
+        xmlhttp.send();
+    }
+
+    function brand_model_change() {
+        var brand_val = $("#brand option:selected").val()
+        loadXMLDoc(brand_val, function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                rep = JSON.parse(xmlhttp.responseText)
+                data = {
+                    brand: '0',
+                    model: []
+                }
+                data.model = rep.model
+                data.brand = rep.brand
+                $('#model').empty()
+                for (var i = 0; i < data.model.length; i++) {
+                    $("#model").append("<option value=" + data.model[i].toString() + ">" + data.model[i].toString() + "</option>")
+                }
+            }
+        });
+    }
+
+    /*******加载动画*********/
+    function loading() {
+        $(".out").fadeIn(2000)
+    }
+
+    /******************焦点事件*********/
+    function check_form() {
+        var PASS = true
+        if ($("#power").val() == 0) {
+            $("#power").css("border", "2px solid red")
+            PASS = false
+            //$("#power").focus()
+        } else {
+            $("#power").css("border", "0")
+        }
+        if ($("#kilometer").val() == 0) {
+            $("#kilometer").css("border", "2px solid red")
+            PASS = false
+            //$("#kilometer").focus()
+        } else {
+            $("#kilometer").css("border", "0")
+        }
+        if ($("#regioncode").val().toString().length != 4) {
+            $("#regioncode").css("border", "2px solid red")
+            PASS = false
+            //$("#regioncode").focus()
+        } else {
+            $("#regioncode").css("border", "0")
+        }
+
+        return PASS
+    }
+
+    $("#power,#kilometer,#regioncode").blur(function () {
+        check_form()
+    })
+    /********表单提交*************/
+    $("#button").click(function () {
+        if (!check_form())
+            return
+        $.ajax({
+            type: "POST",
+            url: "/price",
+            data: $('#cars').serialize(),
+            async: true,
+            beforeSend: function () {
+                $("#wrap-box").hide()
+                loading()
+            },
+            error: function (request) {
+                alert("Connection error");
+            },
+            success: function (data) {
+                //接收后台返回的结果
+                
+                $(".out").fadeOut(2000)
+                $("body").empty()
+                $("body").html(data)
+            }
+        });
+    })
+</script>
+<style>
+    @keyframes wheel_move {
+        0% {
+            left: 0%;
+            top: 100%;
+            transform: rotate(0deg);
+        }
+        50% {
+            left: 50%;
+            top: 105%;
+            transform: rotate(1800deg);
+        }
+        100% {
+            left: 80%;
+            top: 100%;
+            transform: rotate(3600deg);
+        }
+    }
+</style>
+</html>

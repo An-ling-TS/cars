@@ -1,0 +1,66 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: Liang Anqing
+ * @Date: 2020-06-27 13:59:53
+ * @LastEditors: Liang Anqing
+ * @LastEditTime: 2020-07-01 16:19:38
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/3dtext.css">
+    <title>首页</title>
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background: url('../static/pic/bg.jpg') no-repeat;
+            background-size: cover
+        }
+
+        .start {
+            text-decoration: none;
+            color: black;
+            top: 40%;
+            left: 30%;
+            width: 40%;
+            height: 20%;
+            position: absolute;
+            border: 0;
+            border-radius: 50%;
+            background: radial-gradient(rgba(255, 255, 255, 0.1) 15%, rgba(255, 255, 255, 0));
+        }
+
+        .start:hover {
+            transition: 2s;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<a class="start" href="/car"><h1 style="font-size: 4vw;text-align: center;">开始预测</h1></a>
+
+<a href="/show">
+    <div class="content-right" style="top: 70%;left: 54%;">
+        <h2 style="font-size: 1.8vw;text-align: center;margin-top: -5%;">交易总览</h2>
+    </div>
+</a>
+<a href="/about">
+    <div class="content-left" style="top: 70%;left: 44%;">
+        <h2 style="font-size: 1.8vw;text-align:center;margin-top: -5%;">项目介绍</h2>
+    </div>
+</a>
+
+</body>
+</html>
